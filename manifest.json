@@ -1,0 +1,10 @@
+{
+	"manifest_version": 2,
+    "name": "Woo's To Do's",
+    "description": "Launches apps, the good way!",
+    "version": "0.2",
+    "permissions" : ["management"],
+    "chrome_url_overrides" : {
+        "newtab": "indexTodo.html"
+    }
+ }
