@@ -3,7 +3,8 @@
 
 <head>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="styles.css"> 
+	<link rel="stylesheet" href="styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
@@ -17,8 +18,10 @@
 		<h2>To Do List</h2>
 		<ul id="todoItems" class="list-unstyled"></ul>
 		<form class="form-inline">
-			<input type="text" id="todo" name="todo" placeholder="What do you need to do?" style="width: 200px;">
-			<a href="#" id="newTodo" value="Add Todo Item" class="glyphicon glyphicon-plus green">
+			<input type="text" id="todo" name="todo" placeholder="What do you need to do?" style="width: 90%;">
+			<!-- <input type="submit" name="submittodo" value="submittodo"> -->
+
+			<button id="newTodo" value="Add Todo Item" class="glyphicon glyphicon-plus green">
 			</a>
 		</form>
 
@@ -27,13 +30,14 @@
 
 	<div class="col-md-4 col-md-offset-2">
 		<h2>Monthly Reminders</h2>
-		<ul id="monthItems" class="list-unstyled"></ul>
+		<ul id="monthlyItems" class="list-unstyled"></ul>
 		<form class="form-inline">
-			<input type="text" id="monthly" name="monthly" placeholder="What do you do every month?" style="width: 200px;">
-			<a href="#" id="newMonthly" value="Add Monthly Item" class="glyphicon glyphicon-plus green">
+			<input type="text" id="monthly" name="monthly" placeholder="What do you do every month?" style="width: 90%;">
+			<button id="newMonthly" value="Add Monthly Item" class="glyphicon glyphicon-plus green">
 			</a>
 		</form>
 
+		<script type="text/javascript" src="monthdb.js"></script>
 
 	</div>
 	</div>

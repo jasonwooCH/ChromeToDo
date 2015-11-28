@@ -7,21 +7,21 @@
 
     window.addEventListener("DOMContentLoaded", init, false);
 
-    //window.addEventListener('DOMContentLoaded', function () {
-    //  document.getElementById("newitem").addEventListener("click", addTodo, false);
-    //});
+    window.addEventListener('DOMContentLoaded', function () {
+      document.getElementById("newMonthly").addEventListener("click", addMonthly, false);
+    });
 
     woosMonthly.indexedDB.onerror = function(e) {
       console.log(e);
     };
 
     woosMonthly.indexedDB.open = function() {
-      console.log("opened");
+      //console.log("opened");
 
       var version = 2;
       var request = indexedDB.open("monthlys", version);
 
-      console.log("db opening");
+      //console.log("db opening");
 
       // We can only create Object stores in a versionchange transaction.
       request.onupgradeneeded = function(e) {
@@ -42,29 +42,29 @@
 
       request.onsuccess = function(e) {
         woosMonthly.indexedDB.db = e.target.result;
-        woosMonthly.indexedDB.getAllTodoItems();
+        woosMonthly.indexedDB.getAllMonthlyItems();
         console.log("success");
       };
 
       request.onerror = woosMonthly.indexedDB.onerror;
     };
 
-    woosMonthly.indexedDB.addTodo = function(todoText) {
-      console.log(todoText+"fxn");
+    woosMonthly.indexedDB.addMonthly = function(monthlyText) {
+      console.log(monthlyText+"fxn");
 
       var db = woosMonthly.indexedDB.db;
-      var trans = db.transaction(["todo"], "readwrite");
-      var store = trans.objectStore("todo");
+      var trans = db.transaction(["monthly"], "readwrite");
+      var store = trans.objectStore("monthly");
 
       var data = {
-        "text": todoText,
+        "text": monthlyText,
         "timeStamp": new Date().getTime()
       }
 
       var request = store.put(data);
 
       request.onsuccess = function(e) {
-        woosMonthly.indexedDB.getAllTodoItems();
+        woosMonthly.indexedDB.getAllMonthlyItems();
         console.log("add to DB success");
       };
 
@@ -73,15 +73,15 @@
       };
     };
 
-    woosMonthly.indexedDB.deleteTodo = function(id) {
+    woosMonthly.indexedDB.deleteMonthly = function(id) {
       var db = woosMonthly.indexedDB.db;
-      var trans = db.transaction(["todo"], "readwrite");
-      var store = trans.objectStore("todo");
+      var trans = db.transaction(["monthly"], "readwrite");
+      var store = trans.objectStore("monthly");
 
       var request = store.delete(id);
 
       request.onsuccess = function(e) {
-        woosMonthly.indexedDB.getAllTodoItems();
+        woosMonthly.indexedDB.getAllMonthlyItems();
       };
 
       request.onerror = function(e) {
@@ -89,13 +89,14 @@
       };
     };
 
-    woosMonthly.indexedDB.getAllTodoItems = function() {
-      var todos = document.getElementById("todoItems");
-      todos.innerHTML = "";
+    woosMonthly.indexedDB.getAllMonthlyItems = function() {
+      console.log("at all items");
+      var monthlys = document.getElementById("monthlyItems");
+      monthlys.innerHTML = "";
 
       var db = woosMonthly.indexedDB.db;
-      var trans = db.transaction(["todo"], "readwrite");
-      var store = trans.objectStore("todo");
+      var trans = db.transaction(["monthly"], "readwrite");
+      var store = trans.objectStore("monthly");
 
       // Get everything in the store;
       var keyRange = IDBKeyRange.lowerBound(0);
@@ -106,22 +107,24 @@
         if(!!result == false)
           return;
 
-        renderTodo(result.value);
+        renderMonthly(result.value);
         result.continue();
       };
 
       cursorRequest.onerror = woosMonthly.indexedDB.onerror;
     };
 
-    function renderTodo(row) {
-      var todos = document.getElementById("todoItems");
+    function renderMonthly(row) {
+      var monthlys = document.getElementById("monthlyItems");
       var li = document.createElement("li");
       var a = document.createElement("a");
       var t = document.createTextNode(row.text);
       var s = document.createElement("span");
 
+      console.log("at render");
+
       a.addEventListener("click", function() {
-        woosMonthly.indexedDB.deleteTodo(row.timeStamp);
+        woosMonthly.indexedDB.deleteMonthly(row.timeStamp);
       }, false);
 
       a.href = "#";
@@ -132,15 +135,15 @@
       //a.textContent = " [Delete]";
       li.appendChild(t);
       li.appendChild(a);
-      todos.appendChild(li);
+      monthlys.appendChild(li);
     }
 
-    function addTodo() {
+    function addMonthly() {
       console.log("clicked");
-      var todo = document.getElementById("todo");
-      console.log(todo.value);
-      woosMonthly.indexedDB.addTodo(todo.value);
-      todo.value = "";
+      var monthly = document.getElementById("monthly");
+      console.log(monthly.value);
+      woosMonthly.indexedDB.addMonthly(monthly.value);
+      monthly.value = "";
     }
 
     function init() {

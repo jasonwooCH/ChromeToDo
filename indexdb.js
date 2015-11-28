@@ -1,3 +1,24 @@
+    /*  * * * * * * * * 
+        GETTING DATE
+    */
+
+    var minutes = 1000 * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    var d = new Date();
+    var printD = monthNames[d.getMonth()] + " " + d.getDate() + ", " + (1900 + d.getYear());
+    document.getElementById("date").innerHTML = printD;
+
+    /*  * * * * * * * *
+        Database functions
+    */
+
     var woosToDo = {};
     window.indexedDB = window.indexedDB || window.webkitIndexedDB ||
                     window.mozIndexedDB;
@@ -16,12 +37,12 @@
     };
 
     woosToDo.indexedDB.open = function() {
-      console.log("opened");
+      //console.log("opened");
 
       var version = 2;
       var request = indexedDB.open("todos", version);
 
-      console.log("db opening");
+      //console.log("db opening");
 
       // We can only create Object stores in a versionchange transaction.
       request.onupgradeneeded = function(e) {
@@ -37,7 +58,7 @@
         var store = db.createObjectStore("todo",
           {keyPath: "timeStamp"});
 
-        console.log("db created");
+        //console.log("db created");
       };
 
       request.onsuccess = function(e) {
@@ -50,7 +71,7 @@
     };
 
     woosToDo.indexedDB.addTodo = function(todoText) {
-      console.log(todoText+"fxn");
+      //console.log(todoText+"fxn");
 
       var db = woosToDo.indexedDB.db;
       var trans = db.transaction(["todo"], "readwrite");
@@ -65,7 +86,7 @@
 
       request.onsuccess = function(e) {
         woosToDo.indexedDB.getAllTodoItems();
-        console.log("add to DB success");
+        //console.log("add to DB success");
       };
 
       request.onerror = function(e) {
@@ -118,12 +139,15 @@
       var li = document.createElement("li");
       var a = document.createElement("a");
       var t = document.createTextNode(row.text);
+      var timediv = document.createElement("div");
       var s = document.createElement("span");
 
       a.addEventListener("click", function() {
         woosToDo.indexedDB.deleteTodo(row.timeStamp);
       }, false);
 
+
+      timediv.className = "timediv";
       a.href = "#";
       //a.className = "glyphicon glyphicon-minus red";
       s.className = "glyphicon glyphicon-minus red";
@@ -136,7 +160,7 @@
     }
 
     function addTodo() {
-      console.log("clicked");
+      //console.log("clicked");
       var todo = document.getElementById("todo");
       console.log(todo.value);
       woosToDo.indexedDB.addTodo(todo.value);
@@ -146,17 +170,3 @@
     function init() {
       woosToDo.indexedDB.open();
     }
-
-    /*  * * * * * * * * 
-        GETTING DATE
-    */
-
-    var monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-
-    var d = new Date();
-    var printD = monthNames[d.getMonth()] + " " + d.getDate() + ", " + (1900 + d.getYear());
-    document.getElementById("date").innerHTML = printD;
-
-
